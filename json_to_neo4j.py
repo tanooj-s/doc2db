@@ -62,11 +62,8 @@ def push_to_db(tx, data):
 print("Starting to push data to Neo4j......")
 start = time.time()
 with driver.session() as session:
-	i = 0
 	for data_obj in data_objects:
-		print (str(i))
 		session.write_transaction(push_to_db, data_obj)
-		i += 1
 		print("pushed data for " + data_obj['company'])
 end = time.time()
 print ("Took " + str(end-start) + " seconds to push data from " + str(len(data_objects)) + " documents to database")

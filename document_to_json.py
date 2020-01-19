@@ -20,9 +20,8 @@ print("Loading language model....")
 nlp = spacy.load('en_core_web_md')
 
 print("Loading question answering model from Transfomers...")
-qa_model = pipeline(task = "question-answering", 
-					model = 'distilbert-base-uncased-distilled-squad',
-					tokenizer = 'distilbert-base-uncased') # try other slower models that may be more accurate, accuracy/speed is a tradeoff we need to consider
+qa_model = pipeline(task = "question-answering", model = 'distilbert-base-uncased-distilled-squad', tokenizer = 'distilbert-base-uncased') 
+# try other slower models that may be more accurate, although distilbert is 6x faster than BERT
 
 def call_model(question, context):
 # helper func to pull out answer from pipeline, but can use score, start/end later on for fine tuning model
@@ -104,7 +103,7 @@ def get_document_data(context):
   return data
 
 
-# should be pushing these to a database instead
+# could be pushing these directly to the database instead
 print("Starting to analyse documents...........")
 start = time.time()
 df['data'] = df['full_context'].progress_apply(get_document_data)
@@ -120,5 +119,4 @@ print("Data ready to push to a Neo4j instance as a JSON file.")
 
 
 #{ company: ______, board_meeting: { date: ________, purpose: _______, link:________, }, financial_results: { type: audited/unaudited, period: ___________ }, personnel: { resignation: ________, appointment: __________ }, merge_companies: [_______, __________], funds: ____________ }
-# refactor this code so you're not fucking around with dataframes so much - can just push to a database for every row in the database
-# .apply function with session transactions inside 
+ 
